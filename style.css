@@ -1,0 +1,97 @@
+@font-face {
+    font-family: Roboto;
+    src: url(fonts/Roboto-Medium.ttf);
+}
+
+*{
+    font-family: Roboto;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.canvas-panel{
+    margin-left: 100px;
+}
+.canvas{
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: cadetblue;
+    width: 600px;
+    height: 600px;
+}
+.sidebar{
+    width: 300px;
+    margin-right: 100px;
+    height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+h1{
+    color: white;
+    text-shadow: -2px -2px 0 #000,
+     2px -2px 0 #000,
+     -2px 2px 0 #000,
+     2px 2px 0 #000;
+    text-align: center;
+    height: 50px;
+    margin-top: 0;
+    margin-bottom: 20px;
+}
+.tool-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 550px;
+}
+fieldset{
+    border: 2px solid black;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+legend{
+    border: 2px solid black;
+    border-radius: 5px;
+}
+.tools{
+    gap: 10px;
+}
+.fs-colorselection, .tools{
+    margin-bottom: 10px;
+}
+.tools, .canvas-options{
+    align-items: center;
+}
+.range-container{
+    margin-bottom: 10px;
+}
+button{
+    border-radius: 15px;
+    width: 170px;
+    height: 30px;
+    box-shadow: 0 1px 0 0 black;
+}
+.btn-option{
+    width: 100%;
+    background-color: darkcyan;
+}
+button:hover{
+    transform: scale(1.1);
+}

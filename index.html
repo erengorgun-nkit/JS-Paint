@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div class="main">
+            <div class="sidebar">
+                <h1>JS-Paint</h1>
+                <div class="tool-container">
+                    <fieldset class="fs-colorselection">
+                        <legend>Color Selection</legend>
+                        <div class="color-container">
+                            <input id="color" type="color" value="#000">
+                            <label for="color">Brush Color</label>
+                        </div>
+                        <div class="bgcolor-container">
+                            <input id="bgcolor" type="color" value="#D8CFCF">
+                            <label for="bgcolor">Background Color</label>
+                        </div>
+                    </fieldset>
+                    <fieldset class="tools">
+                        <legend>Tools</legend>
+                        <button>Eraser</button>
+                        <button>Rainbow</button>
+                        <button>Toggle Shading</button>
+                        <button>Toggle Lighten</button>
+                    </fieldset>
+                    <fieldset class="canvas-options">
+                        <legend>Canvas Options</legend>
+                        <div class="range-container">
+                            <span><label for="canvas-size">Size</label></span>
+                            <input id="canvas-size" type="range" value="16" min="1" max="120">
+                            <span><label id="range-value" for="canvas-size"></label></span>
+                        </div>
+                        <button>Toggle Grid</button>
+                    </fieldset>
+                    <button class="btn-option" id="btn-clear">Clear</button>
+                    <button class="btn-option" id="btn-export">Export</button>
+                </div>
+            </div>
+            <div class="canvas-panel">
+                <div class="canvas"></div>
+            </div>
+        </div>
+    </body>
+
+</html>

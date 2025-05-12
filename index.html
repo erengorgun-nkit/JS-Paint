@@ -6,6 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Document</title>
         <link rel="stylesheet" href="style.css">
+        <script defer src="script.js"></script>
     </head>
 
     <body>
@@ -16,7 +17,7 @@
                     <fieldset class="fs-colorselection">
                         <legend>Color Selection</legend>
                         <div class="color-container">
-                            <input id="color" type="color" value="#000">
+                            <input id="color" type="color" value="#000000">
                             <label for="color">Brush Color</label>
                         </div>
                         <div class="bgcolor-container">
@@ -26,19 +27,20 @@
                     </fieldset>
                     <fieldset class="tools">
                         <legend>Tools</legend>
-                        <button>Eraser</button>
-                        <button>Rainbow</button>
-                        <button>Toggle Shading</button>
-                        <button>Toggle Lighten</button>
+                        <button id="btn-eraser">Eraser</button>
+                        <button id="btn-rainbow">Rainbow</button>
+                        <button id="btn-shading">Toggle Shading</button>
+                        <button id="btn-lighten">Toggle Lighten</button>
+                        <button id="btn-eyedropper">Eyedropper</button>
                     </fieldset>
                     <fieldset class="canvas-options">
                         <legend>Canvas Options</legend>
                         <div class="range-container">
                             <span><label for="canvas-size">Size</label></span>
-                            <input id="canvas-size" type="range" value="16" min="1" max="120">
+                            <input id="canvas-size" type="range" value="16" min="1" max="64">
                             <span><label id="range-value" for="canvas-size"></label></span>
                         </div>
-                        <button>Toggle Grid</button>
+                        <button id="grid-toggle">Toggle Grid</button>
                     </fieldset>
                     <button class="btn-option" id="btn-clear">Clear</button>
                     <button class="btn-option" id="btn-export">Export</button>

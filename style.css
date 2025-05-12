@@ -28,8 +28,9 @@ body{
     margin-left: 100px;
 }
 .canvas{
+    display: flex;
+    flex-wrap: wrap;
     border: 2px solid black;
-    border-radius: 10px;
     background-color: cadetblue;
     width: 600px;
     height: 600px;
@@ -90,8 +91,14 @@ button{
 }
 .btn-option{
     width: 100%;
-    background-color: darkcyan;
+    background-color: cadetblue;
 }
 button:hover{
     transform: scale(1.1);
+}
+#canvas-size{
+    accent-color: cadetblue;
+}
+.canvas-options{
+    margin-bottom: 10px;
 }

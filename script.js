@@ -29,6 +29,10 @@ function newCanvas() {
         `${rangeCanvasSize.value}x${rangeCanvasSize.value}`;
 }
 
+inputBgColor.addEventListener("input", () => {
+    changeBgColor();
+});
+
 // set canvas size
 rangeCanvasSize.addEventListener("input", () => {
     newCanvas();
@@ -45,7 +49,7 @@ btnGrid.addEventListener("click", () => {
     }
     else {
         for (let i = 0; i < canvas.children.length; i++) {
-            canvas.children[i].style.border = "1px solid rgb(218, 224, 230)";
+            canvas.children[i].style.border = "1px solid rgb(144, 159, 173)";
         }
         gridState = true;
     }
@@ -61,6 +65,19 @@ function changeBgColor() {
     }
 }
 
-inputBgColor.addEventListener("input", () => {
-    changeBgColor();
+// clears canvas
+btnClear.addEventListener("click", () => {
+    for (let i = 0; i < canvas.children.length; i++) {
+        canvas.children[i].style.backgroundColor = inputBgColor.value;
+    }
+});
+
+// saves canvas as png
+btnExport.addEventListener("click", () => {
+    html2canvas(canvas).then(newCanvas => {
+        const link = document.createElement("a");
+        link.download = "my-drawing.png";
+        link.href = newCanvas.toDataURL();
+        link.click();
+    });
 });

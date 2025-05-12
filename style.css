@@ -81,6 +81,7 @@ legend{
     align-items: center;
 }
 .range-container{
+    display: flex;
     margin-bottom: 10px;
 }
 button{
@@ -91,14 +92,27 @@ button{
 }
 .btn-option{
     width: 100%;
-    background-color: cadetblue;
+    background-color: rgb(89, 104, 104);
+    color: white;
 }
 button:hover{
     transform: scale(1.1);
+    background-color: rgb(144, 179, 180);
 }
 #canvas-size{
     accent-color: cadetblue;
 }
 .canvas-options{
-    margin-bottom: 10px;
+    margin-bottom: 5px;
+}
+.on{
+    transform: scale(1.1);
+    background-color: cadetblue;
+}
+#range-value{
+    height: 20px;
+    width: 50px;
+    border-radius: 15px;
+    box-shadow: 0 1px 0 0 black;
+    font-size: 12px;
 }

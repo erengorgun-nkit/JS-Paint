@@ -71,7 +71,9 @@ function changeBgColor() {
 // clears canvas
 btnClear.addEventListener("click", () => {
     for (let i = 0; i < canvas.children.length; i++) {
-        canvas.children[i].style.backgroundColor = inputBgColor.value;
+        let pixel = canvas.children[i];
+        pixel.style.backgroundColor = inputBgColor.value;
+        pixel.removeAttribute("id", "brushed");
     }
 });
 

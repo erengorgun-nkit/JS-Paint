@@ -12,6 +12,7 @@ const btnExport = document.querySelector("#btn-export");
 const btnGrid = document.querySelector("#grid-toggle");
 const canvas = document.querySelector(".canvas");
 const tools = document.querySelector(".tools");
+const body = document.querySelector("body");
 
 newCanvas();
 btnRangeValue.textContent = `${rangeCanvasSize.value}x${rangeCanvasSize.value}`;
@@ -22,18 +23,26 @@ function newCanvas() {
     for (let i = 0; i < rangeCanvasSize.value ** 2; i++) {
         let pixel = document.createElement("div");
         pixel.classList.add("pixel");
+        pixel.setAttribute("draggable", "false");
         pixel.style.width = `${100 / rangeCanvasSize.value}%`;
+        pixel.addEventListener("dragstart", e => e.preventDefault());
         canvas.appendChild(pixel);
         changeBgColor();
     }
 }
 
+// change background color
+function changeBgColor() {
+    for (let i = 0; i < canvas.children.length; i++) {
+        let pixel = canvas.children[i];
+        if (pixel.id != "brushed") {
+            pixel.style.backgroundColor = inputBgColor.value;
+        }
+    }
+}
+
 rangeCanvasSize.addEventListener("input", () => {
     btnRangeValue.textContent = `${rangeCanvasSize.value}x${rangeCanvasSize.value}`
-});
-
-inputBgColor.addEventListener("input", () => {
-    changeBgColor();
 });
 
 // set canvas size
@@ -52,21 +61,16 @@ btnGrid.addEventListener("click", () => {
     }
     else {
         for (let i = 0; i < canvas.children.length; i++) {
-            canvas.children[i].style.border = "1px solid rgb(144, 159, 173)";
+            canvas.children[i].style.border = "0.1px solid rgba(139, 150, 160, 0.4)";
         }
         gridState = true;
     }
 });
 
-// change background color
-function changeBgColor() {
-    for (let i = 0; i < canvas.children.length; i++) {
-        let pixel = canvas.children[i];
-        if (pixel.id != "brushed") {
-            pixel.style.backgroundColor = inputBgColor.value;
-        }
-    }
-}
+// bgcolor input
+inputBgColor.addEventListener("input", () => {
+    changeBgColor();
+});
 
 // clears canvas
 btnClear.addEventListener("click", () => {
@@ -87,9 +91,6 @@ btnExport.addEventListener("click", () => {
     });
 });
 
-
-
-
 // resets all buttons
 function toolStateReset() {
     for (let i = 0; i < tools.children.length; i++) {
@@ -99,7 +100,6 @@ function toolStateReset() {
         }
     }
 }
-
 
 // handles all individual tool toggles
 for (let i = 0; i < tools.children.length; i++) {
@@ -120,8 +120,20 @@ for (let i = 0; i < tools.children.length; i++) {
 
 
 
-
 let isPainting = false;
+
+function paintPixel(pixel) {
+    //eraser state
+    if (btnEraser.classList.contains("on")) {
+        pixel.style.backgroundColor = inputBgColor.value;
+        pixel.removeAttribute("id", "brushed");
+    }
+    // brush state
+    else {
+        pixel.style.backgroundColor = inputColor.value;
+        pixel.setAttribute("id", "brushed");
+    }
+}
 
 canvas.addEventListener("click", (event) => {
     // eyedropper state
@@ -130,24 +142,15 @@ canvas.addEventListener("click", (event) => {
         inputColor.value = event.target.style.backgroundColor;
     }
 });
-canvas.addEventListener("mousedown", () => {
+canvas.addEventListener("mousedown", (event) => {
     isPainting = true;
+    paintPixel(event.target);
 });
 canvas.addEventListener("mouseover",  (event) => {
-    let target = event.target;
-    if (isPainting === true) {
-        // eraser state
-        if (btnEraser.classList.contains("on")) {
-            target.style.backgroundColor = inputBgColor.value;
-            target.removeAttribute("id", "brushed");
-        }
-        // brush state
-        else{
-            target.style.backgroundColor = inputColor.value;
-            target.setAttribute("id", "brushed");
-        }
+    if (isPainting) {
+        paintPixel(event.target);
     }
 });
-canvas.addEventListener("mouseup", () => {
+body.addEventListener("mouseup", () => {
     isPainting = false;
 });

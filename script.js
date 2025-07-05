@@ -118,6 +118,49 @@ for (let i = 0; i < tools.children.length; i++) {
     }
 }
 
+function rgbToHex(rgb) {
+    const result = rgb.match(/\d+/g);
+    if (!result || result.length < 3) {
+        return "#000000";
+    }
+    else {
+        const r = parseInt(result[0]).toString(16).padStart(2, "0");
+        const g = parseInt(result[1]).toString(16).padStart(2, "0");
+        const b = parseInt(result[2]).toString(16).padStart(2, "0");
+
+        return `#${r}${g}${b}`;
+    }
+}
+
+function shadePixel(rgb) {
+    const result = rgb.match(/\d+/g).map(Number);
+    if (btnShading.classList.contains("on")) {
+        for (let i = 0; i < 3; i++) {
+            if (result[i] - 10 != 0) {
+                result[i] -= 10;
+            }
+            else {
+                result[i] -= 255 - result[i];
+            }
+        }
+    } else if (btnLighten.classList.contains("on")) {
+        for (let i = 0; i < 3; i++) {
+            if (result[i] + 10 != 0) {
+                result[i] += 10;
+            }
+            else {
+                result[i] += 255 - result[i];
+            }
+        }
+    }
+
+    const r = result[0];
+    const g = result[1];
+    const b = result[2];
+
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
 
 
 let isPainting = false;
@@ -128,25 +171,38 @@ function paintPixel(pixel) {
         pixel.style.backgroundColor = inputBgColor.value;
         pixel.removeAttribute("id", "brushed");
     }
+    // rainbow state
+    else if (btnRainbow.classList.contains("on")) {
+        let r = Math.floor(Math.random() * 256);
+        let g = Math.floor(Math.random() * 256);
+        let b = Math.floor(Math.random() * 256);
+        pixel.setAttribute("id", "brushed");
+        pixel.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+    }
+    // dropper state
+    else if (btnEyeDropper.classList.contains("on")) {
+        console.log(pixel.style.backgroundColor);
+        const computedColor = window.getComputedStyle(pixel).backgroundColor;
+        inputColor.value = rgbToHex(computedColor);
+    }
+    // shading state
+    else if (btnShading.classList.contains("on")
+        || btnLighten.classList.contains("on")) {
+        if (pixel.id === "brushed") {
+            pixel.style.backgroundColor = shadePixel(pixel.style.backgroundColor);
+        }
+    }
     // brush state
     else {
         pixel.style.backgroundColor = inputColor.value;
         pixel.setAttribute("id", "brushed");
     }
 }
-
-canvas.addEventListener("click", (event) => {
-    // eyedropper state
-    if (btnEyeDropper.classList.contains("on")) {
-        isPainting = false;
-        inputColor.value = event.target.style.backgroundColor;
-    }
-});
 canvas.addEventListener("mousedown", (event) => {
     isPainting = true;
     paintPixel(event.target);
 });
-canvas.addEventListener("mouseover",  (event) => {
+canvas.addEventListener("mouseover", (event) => {
     if (isPainting) {
         paintPixel(event.target);
     }

@@ -29,6 +29,7 @@ body{
     margin-left: 100px;
 }
 .canvas{
+    touch-action: none;
     display: flex;
     flex-wrap: wrap;
     border: 2px solid black;

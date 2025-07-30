@@ -162,51 +162,76 @@ function shadePixel(rgb) {
 }
 
 
-
 let isPainting = false;
 
-function paintPixel(pixel) {
-    //eraser state
-    if (btnEraser.classList.contains("on")) {
-        pixel.style.backgroundColor = inputBgColor.value;
-        pixel.removeAttribute("id", "brushed");
-    }
-    // rainbow state
-    else if (btnRainbow.classList.contains("on")) {
-        let r = Math.floor(Math.random() * 256);
-        let g = Math.floor(Math.random() * 256);
-        let b = Math.floor(Math.random() * 256);
-        pixel.setAttribute("id", "brushed");
-        pixel.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
-    }
-    // dropper state
-    else if (btnEyeDropper.classList.contains("on")) {
-        console.log(pixel.style.backgroundColor);
-        const computedColor = window.getComputedStyle(pixel).backgroundColor;
-        inputColor.value = rgbToHex(computedColor);
-    }
-    // shading state
-    else if (btnShading.classList.contains("on")
-        || btnLighten.classList.contains("on")) {
-        if (pixel.id === "brushed") {
-            pixel.style.backgroundColor = shadePixel(pixel.style.backgroundColor);
+function paintPixel(eventLocation) {
+    if (eventLocation.classList.contains("pixel")) {
+        const pixel = eventLocation;
+        //eraser state
+        if (btnEraser.classList.contains("on")) {
+            pixel.style.backgroundColor = inputBgColor.value;
+            pixel.removeAttribute("id", "brushed");
+        }
+        // rainbow state
+        else if (btnRainbow.classList.contains("on")) {
+            let r = Math.floor(Math.random() * 256);
+            let g = Math.floor(Math.random() * 256);
+            let b = Math.floor(Math.random() * 256);
+            pixel.setAttribute("id", "brushed");
+            pixel.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+        }
+        // dropper state
+        else if (btnEyeDropper.classList.contains("on")) {
+            console.log(pixel.style.backgroundColor);
+            const computedColor = window.getComputedStyle(pixel).backgroundColor;
+            inputColor.value = rgbToHex(computedColor);
+        }
+        // shading state
+        else if (btnShading.classList.contains("on")
+            || btnLighten.classList.contains("on")) {
+            if (pixel.id === "brushed") {
+                pixel.style.backgroundColor = shadePixel(pixel.style.backgroundColor);
+            }
+        }
+        // brush state
+        else {
+            pixel.style.backgroundColor = inputColor.value;
+            pixel.setAttribute("id", "brushed");
         }
     }
-    // brush state
+}
+
+
+// handle all tool events
+canvas.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+canvas.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
+
+function getEventLocation(e) {
+    if (e.type.startsWith("touch")) {
+        const touch = e.touches[0];
+        return document.elementFromPoint(touch.clientX, touch.clientY);
+    }
     else {
-        pixel.style.backgroundColor = inputColor.value;
-        pixel.setAttribute("id", "brushed");
+        return e.target;
     }
 }
-canvas.addEventListener("mousedown", (event) => {
-    isPainting = true;
-    paintPixel(event.target);
+
+["mousedown", "touchstart"].forEach(event => {
+    canvas.addEventListener(event, (e) => {
+        isPainting = true;
+
+        const eventLocation = getEventLocation(e);
+        if (eventLocation) paintPixel(eventLocation);
+    });
 });
-canvas.addEventListener("mouseover", (event) => {
-    if (isPainting) {
-        paintPixel(event.target);
-    }
+["mouseover", "touchmove"].forEach(event => {
+    canvas.addEventListener(event, (e) => {
+        if (isPainting) {
+            const eventLocation = getEventLocation(e);
+            if (eventLocation) paintPixel(eventLocation);
+        }
+    });
 });
-body.addEventListener("mouseup", () => {
-    isPainting = false;
+["mouseup", "mouseleave", "touchend", "touchcancel"].forEach(event => {
+    canvas.addEventListener(event, () => { isPainting = false });
 });

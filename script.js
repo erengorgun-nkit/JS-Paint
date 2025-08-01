@@ -163,10 +163,15 @@ function shadePixel(rgb) {
 
 
 let isPainting = false;
+let lastPaintedPixel = null;
 
 function paintPixel(eventLocation) {
-    if (eventLocation.classList.contains("pixel")) {
+    if (eventLocation.classList.contains("pixel")
+        && eventLocation !== lastPaintedPixel)
+    {
         const pixel = eventLocation;
+        lastPaintedPixel = pixel;
+
         //eraser state
         if (btnEraser.classList.contains("on")) {
             pixel.style.backgroundColor = inputBgColor.value;
@@ -206,7 +211,7 @@ function paintPixel(eventLocation) {
 canvas.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
 canvas.addEventListener('touchmove', e => e.preventDefault(), { passive: false });
 
-function getEventLocation(e) {
+function getEvent(e) {
     if (e.type.startsWith("touch")) {
         const touch = e.touches[0];
         return document.elementFromPoint(touch.clientX, touch.clientY);
@@ -220,18 +225,21 @@ function getEventLocation(e) {
     canvas.addEventListener(event, (e) => {
         isPainting = true;
 
-        const eventLocation = getEventLocation(e);
+        const eventLocation = getEvent(e);
         if (eventLocation) paintPixel(eventLocation);
     });
 });
 ["mouseover", "touchmove"].forEach(event => {
     canvas.addEventListener(event, (e) => {
         if (isPainting) {
-            const eventLocation = getEventLocation(e);
+            const eventLocation = getEvent(e);
             if (eventLocation) paintPixel(eventLocation);
         }
     });
 });
 ["mouseup", "mouseleave", "touchend", "touchcancel"].forEach(event => {
-    canvas.addEventListener(event, () => { isPainting = false });
+    canvas.addEventListener(event, () => {
+        isPainting = false;
+        lastPaintedPixel = null;
+    });
 });
